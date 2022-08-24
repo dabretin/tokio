@@ -233,6 +233,8 @@ cfg_rt! {
     pub use handle::{EnterGuard, Handle, TryCurrentError};
     pub(crate) use handle::{HandleInner, ToHandle};
 
+    pub use context::{context_ptr, set_context_ptr};
+
     mod spawner;
     use self::spawner::Spawner;
 }
@@ -289,6 +291,7 @@ cfg_rt! {
     /// [`new`]: method@Self::new
     /// [`Builder`]: struct@Builder
     #[derive(Debug)]
+    #[repr(C)]
     pub struct Runtime {
         /// Task executor
         kind: Kind,
@@ -302,6 +305,7 @@ cfg_rt! {
 
     /// The runtime executor is either a thread-pool or a current-thread executor.
     #[derive(Debug)]
+    #[repr(C)]
     enum Kind {
         /// Execute all tasks on the current-thread.
         CurrentThread(BasicScheduler),
