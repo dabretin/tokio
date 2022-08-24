@@ -14,12 +14,14 @@ use std::fmt;
 use std::io;
 use std::time::Duration;
 
+#[repr(C)]
 pub(crate) struct BlockingPool {
     spawner: Spawner,
     shutdown_rx: shutdown::Receiver,
 }
 
 #[derive(Clone)]
+#[repr(C)]
 pub(crate) struct Spawner {
     inner: Arc<Inner>,
 }
@@ -71,18 +73,21 @@ struct Shared {
     worker_thread_index: usize,
 }
 
+#[repr(C)]
 pub(crate) struct Task {
     task: task::UnownedTask<NoopSchedule>,
     mandatory: Mandatory,
 }
 
 #[derive(PartialEq, Eq)]
+#[repr(C)]
 pub(crate) enum Mandatory {
     #[cfg_attr(not(fs), allow(dead_code))]
     Mandatory,
     NonMandatory,
 }
 
+#[repr(C)]
 pub(crate) enum SpawnError {
     /// Pool is shutting down and the task was not scheduled
     ShuttingDown,

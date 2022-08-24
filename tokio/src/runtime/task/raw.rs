@@ -6,10 +6,12 @@ use std::ptr::NonNull;
 use std::task::{Poll, Waker};
 
 /// Raw task handle
+#[repr(C)]
 pub(super) struct RawTask {
     ptr: NonNull<Header>,
 }
 
+#[repr(C)]
 pub(super) struct Vtable {
     /// Polls the future.
     pub(super) poll: unsafe fn(NonNull<Header>),
@@ -61,6 +63,7 @@ pub(super) fn vtable<T: Future, S: Schedule>() -> &'static Vtable {
 ///
 /// See this thread for more info:
 /// <https://users.rust-lang.org/t/custom-vtables-with-integers/78508>
+#[repr(C)]
 struct TrailerOffsetHelper<T, S>(T, S);
 impl<T: Future, S: Schedule> TrailerOffsetHelper<T, S> {
     // Pass `size_of`/`align_of` as arguments rather than calling them directly

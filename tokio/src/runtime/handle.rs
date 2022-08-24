@@ -14,12 +14,14 @@ use std::{error, fmt};
 ///
 /// [`Runtime::handle`]: crate::runtime::Runtime::handle()
 #[derive(Debug, Clone)]
+#[repr(C)]
 pub struct Handle {
     pub(super) spawner: Spawner,
 }
 
 /// All internal handles that are *not* the scheduler's spawner.
 #[derive(Debug)]
+#[repr(C)]
 pub(crate) struct HandleInner {
     /// Handles to the I/O drivers
     #[cfg_attr(
@@ -68,6 +70,7 @@ pub(crate) trait ToHandle {
 /// [`Runtime::enter`]: fn@crate::runtime::Runtime::enter
 #[derive(Debug)]
 #[must_use = "Creating and dropping a guard does nothing"]
+#[repr(C)]
 pub struct EnterGuard<'a> {
     _guard: context::EnterGuard,
     _handle_lifetime: PhantomData<&'a Handle>,
@@ -441,6 +444,7 @@ impl HandleInner {
 
 /// Error returned by `try_current` when no Runtime has been started
 #[derive(Debug)]
+#[repr(C)]
 pub struct TryCurrentError {
     kind: TryCurrentErrorKind,
 }
@@ -472,6 +476,7 @@ impl TryCurrentError {
     }
 }
 
+#[repr(C)]
 enum TryCurrentErrorKind {
     NoContext,
     ThreadLocalDestroyed,

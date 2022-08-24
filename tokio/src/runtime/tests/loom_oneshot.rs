@@ -15,14 +15,17 @@ pub(crate) fn channel<T>() -> (Sender<T>, Receiver<T>) {
     (tx, rx)
 }
 
+#[repr(C)]
 pub(crate) struct Sender<T> {
     inner: Arc<Inner<T>>,
 }
 
+#[repr(C)]
 pub(crate) struct Receiver<T> {
     inner: Arc<Inner<T>>,
 }
 
+#[repr(C)]
 struct Inner<T> {
     notify: Notify,
     value: Mutex<Option<T>>,

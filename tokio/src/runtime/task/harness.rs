@@ -11,6 +11,7 @@ use std::ptr::NonNull;
 use std::task::{Context, Poll, Waker};
 
 /// Typed raw task handle.
+#[repr(C)]
 pub(super) struct Harness<T: Future, S: 'static> {
     cell: NonNull<Cell<T, S>>,
 }
@@ -432,6 +433,7 @@ fn set_join_waker(
     res
 }
 
+#[repr(C)]
 enum PollFuture {
     Complete,
     Notified,
@@ -466,6 +468,7 @@ fn poll_future<T: Future, S: Schedule>(
 ) -> Poll<()> {
     // Poll the future.
     let output = panic::catch_unwind(panic::AssertUnwindSafe(|| {
+        #[repr(C)]
         struct Guard<'a, T: Future> {
             core: &'a CoreStage<T>,
         }

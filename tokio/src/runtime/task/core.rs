@@ -36,6 +36,7 @@ pub(super) struct Cell<T: Future, S> {
     pub(super) trailer: Trailer,
 }
 
+#[repr(C)]
 pub(super) struct CoreStage<T: Future> {
     stage: UnsafeCell<Stage<T>>,
 }
@@ -43,6 +44,7 @@ pub(super) struct CoreStage<T: Future> {
 /// The core of the task.
 ///
 /// Holds the future or output, depending on the stage of execution.
+#[repr(C)]
 pub(super) struct Core<T: Future, S> {
     /// Scheduler used to drive this future.
     pub(super) scheduler: S,
@@ -89,6 +91,7 @@ unsafe impl Sync for Header {}
 
 /// Cold data is stored after the future. Data is considered cold if it is only
 /// used during creation or shutdown of the task.
+#[repr(C)]
 pub(super) struct Trailer {
     /// Pointers for the linked list in the `OwnedTasks` that owns this task.
     pub(super) owned: linked_list::Pointers<Header>,
@@ -105,6 +108,7 @@ generate_addr_of_methods! {
 }
 
 /// Either the future or the output.
+#[repr(C)]
 pub(super) enum Stage<T: Future> {
     Running(T),
     Finished(super::Result<T::Output>),

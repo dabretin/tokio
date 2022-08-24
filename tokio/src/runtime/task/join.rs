@@ -151,6 +151,7 @@ cfg_rt! {
     /// [`task::spawn_blocking`]: crate::task::spawn_blocking
     /// [`std::thread::JoinHandle`]: std::thread::JoinHandle
     /// [`JoinError`]: crate::task::JoinError
+    #[repr(C)]
     pub struct JoinHandle<T> {
         raw: Option<RawTask>,
         id: Id,

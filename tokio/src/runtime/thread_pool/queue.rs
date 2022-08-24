@@ -11,13 +11,16 @@ use std::ptr;
 use std::sync::atomic::Ordering::{AcqRel, Acquire, Relaxed, Release};
 
 /// Producer handle. May only be used from a single thread.
+#[repr(C)]
 pub(crate) struct Local<T: 'static> {
     inner: Arc<Inner<T>>,
 }
 
 /// Consumer handle. May be used from many threads.
+#[repr(C)]
 pub(crate) struct Steal<T: 'static>(Arc<Inner<T>>);
 
+#[repr(C)]
 pub(crate) struct Inner<T: 'static> {
     /// Concurrently updated by many threads.
     ///
@@ -217,6 +220,7 @@ impl<T> Local<T> {
         }
 
         /// An iterator that takes elements out of the run queue.
+        #[repr(C)]
         struct BatchTaskIter<'a, T: 'static> {
             buffer: &'a [UnsafeCell<MaybeUninit<task::Notified<T>>>; LOCAL_QUEUE_CAPACITY],
             head: u32,

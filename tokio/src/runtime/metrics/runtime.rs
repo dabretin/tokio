@@ -10,6 +10,7 @@ use std::time::Duration;
 ///
 /// [`Runtime::metrics`]: crate::runtime::Runtime::metrics()
 #[derive(Clone, Debug)]
+#[repr(C)]
 pub struct RuntimeMetrics {
     handle: Handle,
 }

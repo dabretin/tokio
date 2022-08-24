@@ -203,6 +203,7 @@ use std::{fmt, mem};
 #[cfg_attr(not(tokio_unstable), allow(unreachable_pub))]
 // TODO(eliza): there's almost certainly no reason not to make this `Copy` as well...
 #[derive(Clone, Debug, Hash, Eq, PartialEq)]
+#[repr(C)]
 pub struct Id(u64);
 
 /// An owned handle to the task, tracked by ref count.
@@ -234,6 +235,7 @@ pub(crate) struct LocalNotified<S: 'static> {
 
 /// A task that is not owned by any OwnedTasks. Used for blocking tasks.
 /// This type holds two ref-counts.
+#[repr(C)]
 pub(crate) struct UnownedTask<S: 'static> {
     raw: RawTask,
     _p: PhantomData<S>,

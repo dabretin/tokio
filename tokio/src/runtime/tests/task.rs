@@ -7,6 +7,7 @@ use std::future::Future;
 use std::sync::atomic::{AtomicBool, Ordering};
 use std::sync::Arc;
 
+#[repr(C)]
 struct AssertDropHandle {
     is_dropped: Arc<AtomicBool>,
 }
@@ -22,6 +23,7 @@ impl AssertDropHandle {
     }
 }
 
+#[repr(C)]
 struct AssertDrop {
     is_dropped: Arc<AtomicBool>,
 }
@@ -205,6 +207,7 @@ fn shutdown_immediately() {
 fn spawn_during_shutdown() {
     static DID_SPAWN: AtomicBool = AtomicBool::new(false);
 
+    #[repr(C)]
     struct SpawnOnDrop(Runtime);
     impl Drop for SpawnOnDrop {
         fn drop(&mut self) {
@@ -231,6 +234,7 @@ fn spawn_during_shutdown() {
 }
 
 fn with(f: impl FnOnce(Runtime)) {
+    #[repr(C)]
     struct Reset;
 
     impl Drop for Reset {
@@ -253,13 +257,16 @@ fn with(f: impl FnOnce(Runtime)) {
 }
 
 #[derive(Clone)]
+#[repr(C)]
 struct Runtime(Arc<Inner>);
 
+#[repr(C)]
 struct Inner {
     core: TryLock<Core>,
     owned: OwnedTasks<Runtime>,
 }
 
+#[repr(C)]
 struct Core {
     queue: VecDeque<task::Notified<Runtime>>,
 }

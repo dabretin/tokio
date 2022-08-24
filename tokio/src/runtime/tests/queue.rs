@@ -235,6 +235,7 @@ fn stress2() {
     }
 }
 
+#[repr(C)]
 struct Runtime;
 
 impl Schedule for Runtime {

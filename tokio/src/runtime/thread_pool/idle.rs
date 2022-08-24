@@ -6,6 +6,7 @@ use crate::loom::sync::Mutex;
 use std::fmt;
 use std::sync::atomic::Ordering::{self, SeqCst};
 
+#[repr(C)]
 pub(super) struct Idle {
     /// Tracks both the number of searching workers and the number of unparked
     /// workers.
@@ -25,6 +26,7 @@ const UNPARK_MASK: usize = !SEARCH_MASK;
 const SEARCH_MASK: usize = (1 << UNPARK_SHIFT) - 1;
 
 #[derive(Copy, Clone)]
+#[repr(C)]
 struct State(usize);
 
 impl Idle {

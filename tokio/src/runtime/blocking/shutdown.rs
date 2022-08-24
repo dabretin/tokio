@@ -9,11 +9,13 @@ use crate::sync::oneshot;
 use std::time::Duration;
 
 #[derive(Debug, Clone)]
+#[repr(C)]
 pub(super) struct Sender {
     _tx: Arc<oneshot::Sender<()>>,
 }
 
 #[derive(Debug)]
+#[repr(C)]
 pub(super) struct Receiver {
     rx: oneshot::Receiver<()>,
 }

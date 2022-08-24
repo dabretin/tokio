@@ -8,6 +8,7 @@ use crate::loom::sync::atomic::{AtomicU64, Ordering::Relaxed};
 ///
 /// [unstable]: crate#unstable-features
 #[derive(Debug)]
+#[repr(C)]
 pub(crate) struct SchedulerMetrics {
     /// Number of tasks that are scheduled from outside the runtime.
     pub(super) remote_schedule_count: AtomicU64,

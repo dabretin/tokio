@@ -6,12 +6,14 @@ use super::Id;
 use crate::util::SyncWrapper;
 cfg_rt! {
     /// Task failed to execute to completion.
+    #[repr(C)]
     pub struct JoinError {
         repr: Repr,
         id: Id,
     }
 }
 
+#[repr(C)]
 enum Repr {
     Cancelled,
     Panic(SyncWrapper<Box<dyn Any + Send + 'static>>),

@@ -4,12 +4,14 @@ use std::fmt;
 use std::sync::atomic::Ordering::{AcqRel, Acquire, Release};
 use std::usize;
 
+#[repr(C)]
 pub(super) struct State {
     val: AtomicUsize,
 }
 
 /// Current state value.
 #[derive(Copy, Clone)]
+#[repr(C)]
 pub(super) struct Snapshot(usize);
 
 type UpdateResult = Result<Snapshot, Snapshot>;
@@ -65,6 +67,7 @@ const REF_ONE: usize = 1 << REF_COUNT_SHIFT;
 const INITIAL_STATE: usize = (REF_ONE * 3) | JOIN_INTEREST | NOTIFIED;
 
 #[must_use]
+#[repr(C)]
 pub(super) enum TransitionToRunning {
     Success,
     Cancelled,
@@ -73,6 +76,7 @@ pub(super) enum TransitionToRunning {
 }
 
 #[must_use]
+#[repr(C)]
 pub(super) enum TransitionToIdle {
     Ok,
     OkNotified,
@@ -81,6 +85,7 @@ pub(super) enum TransitionToIdle {
 }
 
 #[must_use]
+#[repr(C)]
 pub(super) enum TransitionToNotifiedByVal {
     DoNothing,
     Submit,
@@ -88,6 +93,7 @@ pub(super) enum TransitionToNotifiedByVal {
 }
 
 #[must_use]
+#[repr(C)]
 pub(super) enum TransitionToNotifiedByRef {
     DoNothing,
     Submit,

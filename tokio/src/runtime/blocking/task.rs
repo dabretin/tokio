@@ -3,6 +3,7 @@ use std::pin::Pin;
 use std::task::{Context, Poll};
 
 /// Converts a function to a future that completes on poll.
+#[repr(C)]
 pub(crate) struct BlockingTask<T> {
     func: Option<T>,
 }

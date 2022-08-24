@@ -3,6 +3,7 @@
 use crate::loom::sync::atomic::{AtomicU64, Ordering::Relaxed};
 
 #[derive(Default)]
+#[repr(C)]
 pub(crate) struct IoDriverMetrics {
     pub(super) fd_registered_count: AtomicU64,
     pub(super) fd_deregistered_count: AtomicU64,

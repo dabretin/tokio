@@ -13,17 +13,20 @@ use futures::future::FutureExt;
 // Enums for each option in the combinations being tested
 
 #[derive(Copy, Clone, Debug, PartialEq)]
+#[repr(C)]
 enum CombiRuntime {
     CurrentThread,
     Multi1,
     Multi2,
 }
 #[derive(Copy, Clone, Debug, PartialEq)]
+#[repr(C)]
 enum CombiLocalSet {
     Yes,
     No,
 }
 #[derive(Copy, Clone, Debug, PartialEq)]
+#[repr(C)]
 enum CombiTask {
     PanicOnRun,
     PanicOnDrop,
@@ -31,17 +34,20 @@ enum CombiTask {
     NoPanic,
 }
 #[derive(Copy, Clone, Debug, PartialEq)]
+#[repr(C)]
 enum CombiOutput {
     PanicOnDrop,
     NoPanic,
 }
 #[derive(Copy, Clone, Debug, PartialEq)]
+#[repr(C)]
 enum CombiJoinInterest {
     Polled,
     NotPolled,
 }
 #[allow(clippy::enum_variant_names)] // we aren't using glob imports
 #[derive(Copy, Clone, Debug, PartialEq)]
+#[repr(C)]
 enum CombiJoinHandle {
     DropImmediately = 1,
     DropFirstPoll = 2,
@@ -49,6 +55,7 @@ enum CombiJoinHandle {
     DropAfterConsume = 4,
 }
 #[derive(Copy, Clone, Debug, PartialEq)]
+#[repr(C)]
 enum CombiAbort {
     NotAborted = 0,
     AbortedImmediately = 1,
@@ -58,6 +65,7 @@ enum CombiAbort {
 }
 
 #[derive(Copy, Clone, Debug, PartialEq)]
+#[repr(C)]
 enum CombiAbortSource {
     JoinHandle,
     AbortHandle,
@@ -187,6 +195,7 @@ fn test_combination(
     println!("Runtime {:?}, LocalSet {:?}, Task {:?}, Output {:?}, JoinInterest {:?}, JoinHandle {:?}, AbortHandle {:?}, Abort {:?} ({:?})", rt, ls, task, output, ji, jh, ah, abort, abort_src);
 
     // A runtime optionally with a LocalSet
+    #[repr(C)]
     struct Rt {
         rt: crate::runtime::Runtime,
         ls: Option<crate::task::LocalSet>,
@@ -234,6 +243,7 @@ fn test_combination(
     }
 
     // The type used for the output of the future
+    #[repr(C)]
     struct Output {
         panic_on_drop: bool,
         on_drop: Option<oneshot::Sender<()>>,
@@ -253,6 +263,7 @@ fn test_combination(
     }
 
     // A wrapper around the future that is spawned
+    #[repr(C)]
     struct FutWrapper<F> {
         inner: F,
         on_drop: Option<oneshot::Sender<()>>,
@@ -278,6 +289,7 @@ fn test_combination(
     }
 
     // The channels passed to the task
+    #[repr(C)]
     struct Signals {
         on_first_poll: Option<oneshot::Sender<()>>,
         wait_complete: Option<oneshot::Receiver<()>>,

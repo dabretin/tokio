@@ -53,15 +53,18 @@ cfg_not_has_atomic_u64! {
     }
 }
 
+#[repr(C)]
 pub(crate) struct OwnedTasks<S: 'static> {
     inner: Mutex<OwnedTasksInner<S>>,
     id: u64,
 }
+#[repr(C)]
 pub(crate) struct LocalOwnedTasks<S: 'static> {
     inner: UnsafeCell<OwnedTasksInner<S>>,
     id: u64,
     _not_send_or_sync: PhantomData<*const ()>,
 }
+#[repr(C)]
 struct OwnedTasksInner<S: 'static> {
     list: LinkedList<Task<S>, <Task<S> as Link>::Target>,
     closed: bool,

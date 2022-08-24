@@ -4,6 +4,7 @@ use std::convert::TryFrom;
 use std::sync::atomic::Ordering::Relaxed;
 use std::time::Instant;
 
+#[repr(C)]
 pub(crate) struct MetricsBatch {
     /// Number of times the worker parked.
     park_count: u64,

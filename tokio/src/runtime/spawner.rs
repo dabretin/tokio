@@ -8,6 +8,7 @@ cfg_rt_multi_thread! {
 }
 
 #[derive(Debug, Clone)]
+#[repr(C)]
 pub(crate) enum Spawner {
     Basic(basic_scheduler::Spawner),
     #[cfg(all(feature = "rt-multi-thread", not(tokio_wasi)))]

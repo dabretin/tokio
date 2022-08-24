@@ -12,10 +12,12 @@ use crate::util::TryLock;
 use std::sync::atomic::Ordering::SeqCst;
 use std::time::Duration;
 
+#[repr(C)]
 pub(crate) struct Parker {
     inner: Arc<Inner>,
 }
 
+#[repr(C)]
 pub(crate) struct Unparker {
     inner: Arc<Inner>,
 }

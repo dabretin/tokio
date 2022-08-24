@@ -1,9 +1,12 @@
 //! This file contains mocks of the types in src/runtime/metrics
 
+#[repr(C)]
 pub(crate) struct SchedulerMetrics {}
 
+#[repr(C)]
 pub(crate) struct WorkerMetrics {}
 
+#[repr(C)]
 pub(crate) struct MetricsBatch {}
 
 impl SchedulerMetrics {

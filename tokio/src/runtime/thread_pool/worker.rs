@@ -73,6 +73,7 @@ use std::cell::RefCell;
 use std::time::Duration;
 
 /// A scheduler worker
+#[repr(C)]
 pub(super) struct Worker {
     /// Reference to shared state
     shared: Arc<Shared>,
@@ -85,6 +86,7 @@ pub(super) struct Worker {
 }
 
 /// Core data
+#[repr(C)]
 struct Core {
     /// Used to schedule bookkeeping tasks every so often.
     tick: u32,
@@ -120,6 +122,7 @@ struct Core {
 }
 
 /// State shared across all workers
+#[repr(C)]
 pub(super) struct Shared {
     /// Handle to the I/O driver, timer, blocking spawner, ...
     handle_inner: HandleInner,
@@ -156,6 +159,7 @@ pub(super) struct Shared {
 }
 
 /// Used to communicate with a worker from other threads.
+#[repr(C)]
 struct Remote {
     /// Steals tasks from this worker.
     steal: queue::Steal<Arc<Shared>>,
@@ -165,6 +169,7 @@ struct Remote {
 }
 
 /// Thread-local context
+#[repr(C)]
 struct Context {
     /// Worker
     worker: Arc<Worker>,
@@ -174,6 +179,7 @@ struct Context {
 }
 
 /// Starts the workers
+#[repr(C)]
 pub(crate) struct Launch(Vec<Arc<Worker>>);
 
 /// Running a task may consume the core. If the core is still available when
@@ -252,6 +258,7 @@ where
     F: FnOnce() -> R,
 {
     // Try to steal the worker core back
+    #[repr(C)]
     struct Reset(coop::Budget);
 
     impl Drop for Reset {

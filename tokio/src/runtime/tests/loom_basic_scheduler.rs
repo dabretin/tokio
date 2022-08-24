@@ -104,6 +104,7 @@ fn assert_no_unnecessary_polls() {
     });
 }
 
+#[repr(C)]
 struct BlockedFuture {
     rx: Receiver<()>,
     num_polls: Arc<AtomicUsize>,
@@ -122,6 +123,7 @@ impl Future for BlockedFuture {
     }
 }
 
+#[repr(C)]
 struct ResetFuture {
     rx: Receiver<()>,
     pending_cnt: Arc<AtomicUsize>,

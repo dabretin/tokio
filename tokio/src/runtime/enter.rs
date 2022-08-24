@@ -3,6 +3,7 @@ use std::fmt;
 use std::marker::PhantomData;
 
 #[derive(Debug, Clone, Copy)]
+#[repr(C)]
 pub(crate) enum EnterContext {
     #[cfg_attr(not(feature = "rt"), allow(dead_code))]
     Entered {
@@ -20,6 +21,7 @@ impl EnterContext {
 thread_local!(static ENTERED: Cell<EnterContext> = const { Cell::new(EnterContext::NotEntered) });
 
 /// Represents an executor context.
+#[repr(C)]
 pub(crate) struct Enter {
     _p: PhantomData<RefCell<()>>,
 }
@@ -69,6 +71,7 @@ cfg_rt! {
 cfg_rt_multi_thread! {
     pub(crate) fn exit<F: FnOnce() -> R, R>(f: F) -> R {
         // Reset in case the closure panics
+        #[repr(C)]
         struct Reset(EnterContext);
         impl Drop for Reset {
             fn drop(&mut self) {
@@ -111,6 +114,7 @@ cfg_rt! {
         DisallowBlockingGuard(reset)
     }
 
+    #[repr(C)]
     pub(crate) struct DisallowBlockingGuard(bool);
     impl Drop for DisallowBlockingGuard {
         fn drop(&mut self) {

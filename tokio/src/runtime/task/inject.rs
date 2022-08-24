@@ -10,6 +10,7 @@ use std::sync::atomic::Ordering::{Acquire, Release};
 
 /// Growable, MPMC queue used to inject new tasks into the scheduler and as an
 /// overflow queue when the local, fixed-size, array queue overflows.
+#[repr(C)]
 pub(crate) struct Inject<T: 'static> {
     /// Pointers to the head and tail of the queue.
     pointers: Mutex<Pointers>,
@@ -21,6 +22,7 @@ pub(crate) struct Inject<T: 'static> {
     _p: PhantomData<T>,
 }
 
+#[repr(C)]
 struct Pointers {
     /// True if the queue is closed.
     is_closed: bool,

@@ -24,6 +24,7 @@ mod atomic_take {
     use std::mem::MaybeUninit;
     use std::sync::atomic::Ordering::SeqCst;
 
+    #[repr(C)]
     pub(super) struct AtomicTake<T> {
         inner: MaybeUninit<T>,
         taken: AtomicBool,
@@ -55,6 +56,7 @@ mod atomic_take {
 }
 
 #[derive(Clone)]
+#[repr(C)]
 struct AtomicOneshot<T> {
     value: std::sync::Arc<atomic_take::AtomicTake<oneshot::Sender<T>>>,
 }
@@ -402,6 +404,7 @@ fn track<T: Future>(f: T) -> Track<T> {
 }
 
 pin_project! {
+    #[repr(C)]
     struct Track<T> {
         #[pin]
         inner: T,

@@ -37,6 +37,7 @@ use std::time::Duration;
 ///     // use runtime ...
 /// }
 /// ```
+#[repr(C)]
 pub struct Builder {
     /// Runtime type
     kind: Kind,
@@ -98,6 +99,7 @@ cfg_unstable! {
     /// See [`Builder::unhandled_panic`] for more details.
     #[derive(Debug, Clone)]
     #[non_exhaustive]
+    #[repr(C)]
     pub enum UnhandledPanic {
         /// The runtime should ignore panics on spawned tasks.
         ///
@@ -172,6 +174,7 @@ cfg_unstable! {
 
 pub(crate) type ThreadNameFn = std::sync::Arc<dyn Fn() -> String + Send + Sync + 'static>;
 
+#[repr(C)]
 pub(crate) enum Kind {
     CurrentThread,
     #[cfg(all(feature = "rt-multi-thread", not(tokio_wasi)))]

@@ -13,6 +13,7 @@ use std::panic::{RefUnwindSafe, UnwindSafe};
 ///
 /// [`JoinHandle`]: crate::task::JoinHandle
 #[cfg_attr(docsrs, doc(cfg(feature = "rt")))]
+#[repr(C)]
 pub struct AbortHandle {
     raw: Option<RawTask>,
     id: Id,

@@ -21,6 +21,7 @@ use std::fmt;
 use std::future::Future;
 
 /// Work-stealing based thread pool for executing futures.
+#[repr(C)]
 pub(crate) struct ThreadPool {
     spawner: Spawner,
 }
@@ -38,6 +39,7 @@ pub(crate) struct ThreadPool {
 ///
 /// [`ThreadPool::spawner`]: method@ThreadPool::spawner
 #[derive(Clone)]
+#[repr(C)]
 pub(crate) struct Spawner {
     shared: Arc<worker::Shared>,
 }

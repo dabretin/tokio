@@ -147,10 +147,12 @@ cfg_not_time! {
 // ===== runtime driver =====
 
 #[derive(Debug)]
+#[repr(C)]
 pub(crate) struct Driver {
     inner: TimeDriver,
 }
 
+#[repr(C)]
 pub(crate) struct Resources {
     pub(crate) io_handle: IoHandle,
     pub(crate) signal_handle: SignalHandle,
@@ -158,6 +160,7 @@ pub(crate) struct Resources {
     pub(crate) clock: Clock,
 }
 
+#[repr(C)]
 pub(crate) struct Cfg {
     pub(crate) enable_io: bool,
     pub(crate) enable_time: bool,

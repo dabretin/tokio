@@ -20,6 +20,7 @@ use std::task::Poll::{Pending, Ready};
 use std::time::Duration;
 
 /// Executes tasks on the current thread
+#[repr(C)]
 pub(crate) struct BasicScheduler {
     /// Core scheduler data is acquired by a thread entering `block_on`.
     core: AtomicCell<Core>,
@@ -40,6 +41,7 @@ pub(crate) struct BasicScheduler {
 
 /// Data required for executing the scheduler. The struct is passed around to
 /// a function that will perform the scheduling work and acts as a capability token.
+#[repr(C)]
 struct Core {
     /// Scheduler run queue
     tasks: VecDeque<task::Notified<Arc<Shared>>>,
@@ -64,11 +66,13 @@ struct Core {
 }
 
 #[derive(Clone)]
+#[repr(C)]
 pub(crate) struct Spawner {
     shared: Arc<Shared>,
 }
 
 /// Scheduler state shared between threads.
+#[repr(C)]
 struct Shared {
     /// Remote run queue. None if the `Runtime` has been dropped.
     queue: Mutex<Option<VecDeque<task::Notified<Arc<Shared>>>>>,
@@ -96,6 +100,7 @@ struct Shared {
 }
 
 /// Thread-local context.
+#[repr(C)]
 struct Context {
     /// Handle to the spawner
     spawner: Spawner,
@@ -504,6 +509,7 @@ impl Wake for Shared {
 
 /// Used to ensure we always place the `Core` value back into its slot in
 /// `BasicScheduler`, even if the future panics.
+#[repr(C)]
 struct CoreGuard<'a> {
     context: Context,
     basic_scheduler: &'a BasicScheduler,
