@@ -1,5 +1,6 @@
 use crate::runtime::Callback;
 
+#[repr(C)]
 pub(crate) struct Config {
     /// How many ticks before pulling a task from the global/remote queue?
     pub(crate) global_queue_interval: u32,
